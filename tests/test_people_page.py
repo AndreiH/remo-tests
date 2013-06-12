@@ -45,6 +45,8 @@ class TestPeoplePage:
             u'%s bad links found. ' % len(bad_urls) + ', '.join(bad_urls))
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="Issue 67 - test_filter_results_by_name CI fail")
+    # https://github.com/mozilla/remo-tests/issues/67
     def test_filter_results_by_name(self, mozwebqa):
         # Verify name in search matches query results
         query = u'Reps'

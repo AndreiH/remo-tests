@@ -12,7 +12,8 @@ from pages.base import Base
 class People(Base):
 
     _page_title = 'Mozilla Reps - People'
-    _page_loader_locator = (By.ID, 'canvasLoader')
+    _advanced_options_locator = (By.ID, 'adv-search-icon')
+    _cvs_export_button_locator = (By.ID, 'csv-export-button')
     _name_locator = (By.CSS_SELECTOR, '.profiles-li-item')
     _open_profile_locator = (By.CSS_SELECTOR, '.profiles-li-item > a')
     _people_filter_locator = (By.ID, 'searchfield')
@@ -64,3 +65,9 @@ class People(Base):
     @property
     def is_profile_list_visible(self):
         return self.is_element_visible(*self._profile_list_locator)
+
+    def click_on_advanced_options(self):
+        self.selenium.find_element(*self._advanced_options_locator).click()
+
+    def click_on_cvs_export_button(self):
+        self.selenium.find_element(*self._cvs_export_button_locator).click()

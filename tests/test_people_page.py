@@ -5,9 +5,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
+import requests
 from unittestzero import Assert
-from pages.link_crawler import LinkCrawler
 
+from pages.link_crawler import LinkCrawler
+from pages.home import Home
 from pages.people import People
 
 
@@ -67,3 +69,21 @@ class TestPeoplePage:
         people_page.filter_for(query)
         profile_page = people_page.click_to_open_profile()
         Assert.contains(query, profile_page.profile_text)
+
+    @pytest.mark.nondestructive
+    def test_csv_export(self, mozwebqa):
+        home_page = Home(mozwebqa)
+        home_page.go_to_homepage()
+        home_page.login(user='default')
+
+        people_page = People(mozwebqa)
+        people_page.go_to_people_page()
+
+        people_page.click_on_advanced_options()
+        people_page.click_on_cvs_export_button()
+        csv_export = people_page.get_url_current_page()
+        r = requests.get(csv_export, verify=False)
+
+        Assert.equal(
+            r.status_code, 200,
+            u'request to %s responded with %s status code' % (csv_export, r.status_code))

@@ -21,15 +21,13 @@ class TestProfilePage:
         home_page.login()
 
         profile_page = home_page.header.click_profile()
-
-#        Assert.true(home_page.header.is_user_logged_in)
-
         user_edit_page = profile_page.click_edit_profile()
+        Assert.true(user_edit_page.is_the_current_page)
 
         # save initial values to restore them after the test is finished
         fields_no = len(user_edit_page.profile_fields)
         initial_value = [None] * fields_no
-        random_name = "test%s" % random.randrange(1, 100)
+        random_name = "test%s" % random.choice(string.lowercase)
 
         # enter new values
         for i in range(0, fields_no):
@@ -38,10 +36,10 @@ class TestProfilePage:
             user_edit_page.profile_fields[i].type_value(random_name)
 
         user_edit_page.click_save_profile()
-        profile_page.click_edit_profile()
-#        Assert.equal(user_edit_page.update_message, "Profile Updated"
+        Assert.true(profile_page.update_message)
 
-        # restore initial values
+        # go back and restore initial values
+        profile_page.click_edit_profile()
         for i in range(0, fields_no):
             user_edit_page.profile_fields[i].clear_field()
             user_edit_page.profile_fields[i].type_value(initial_value[i])

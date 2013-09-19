@@ -17,6 +17,7 @@ class Profile(Base):
     _page_source_locator = (By.ID, 'wrapper')
     _user_avatar_locator = (By.ID, 'profiles-view-avatar')
     _edit_profile_button_locator = (By.CSS_SELECTOR, '.small.button')
+    _update_message_locator = (By.CSS_SELECTOR, '.alert-box.success')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -30,10 +31,15 @@ class Profile(Base):
         self.selenium.find_element(*self._edit_profile_button_locator).click()
         return EditProfile(self.testsetup)
 
+    def update_message(self):
+        self.selenium.find_element(*self._update_message_locator)
+
 
 class EditProfile(Base):
 
-    _profile_fields_locator = (By.CSS_SELECTOR, '#name-gender')
+    _page_title = 'Mozilla Reps - Edit Profile'
+
+    _profile_fields_locator = (By.CSS_SELECTOR, '#name-gender > input')
     _save_profile_button_locator = (By.ID, 'save-profile-button')
 
     @property
@@ -47,8 +53,6 @@ class EditProfile(Base):
 
     class ProfileSection(Page):
 
-        _input_field_locator = (By.CSS_SELECTOR, ' input')
-
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
             self._root_element = element
@@ -56,13 +60,13 @@ class EditProfile(Base):
         @property
         def field_value(self):
             try:
-                return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
+                return self._root_element.get_attribute('value')
             except Exception.NoSuchAttributeException:
                 return " "
 
         def type_value(self, value):
             if value != '':
-                self._root_element.find_element(*self._input_field_locator).send_keys(value)
+                self._root_element.send_keys(value)
 
         def clear_field(self):
-            self._root_element.find_element(*self._input_field_locator).clear()
+            self._root_element.clear()

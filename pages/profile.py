@@ -12,8 +12,6 @@ from pages.page import Page
 
 class Profile(Base):
 
-    _page_title = 'Mozilla Reps - Profile of webqabrowserid'
-
     _page_source_locator = (By.ID, 'wrapper')
     _user_avatar_locator = (By.ID, 'profiles-view-avatar')
     _edit_profile_button_locator = (By.CSS_SELECTOR, '.small.button')
@@ -31,8 +29,9 @@ class Profile(Base):
         self.selenium.find_element(*self._edit_profile_button_locator).click()
         return EditProfile(self.testsetup)
 
+    @property
     def update_message(self):
-        self.selenium.find_element(*self._update_message_locator)
+        return self.is_element_visible(*self._update_message_locator)
 
 
 class EditProfile(Base):

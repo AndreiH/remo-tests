@@ -30,7 +30,7 @@ class Profile(Base):
         return EditProfile(self.testsetup)
 
     @property
-    def update_message(self):
+    def is_update_message_visible(self):
         return self.is_element_visible(*self._update_message_locator)
 
 

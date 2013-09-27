@@ -34,12 +34,21 @@ class TestProfilePage:
             user_edit_page.profile_fields[i].type_value(random_name)
 
         user_edit_page.click_save_profile()
-        Assert.true(profile_page.update_message)
-
-        # go back and restore initial values
+        Assert.true(profile_page.is_update_message_visible)
         profile_page.click_edit_profile()
-        for i in range(0, fields_no):
-            user_edit_page.profile_fields[i].clear_field()
-            user_edit_page.profile_fields[i].type_value(initial_value[i])
 
-        user_edit_page.click_save_profile()
+        # using try finally to ensure that the initial values are restore even if the Asserts fail.
+        try:
+            for i in range(0, fields_no):
+                Assert.contains(random_name, user_edit_page.profile_fields[i].field_value)
+
+        except Exception as exception:
+            Assert.fail(exception)
+
+        finally:
+            # go back and restore initial values
+            for i in range(0, fields_no):
+                user_edit_page.profile_fields[i].clear_field()
+                user_edit_page.profile_fields[i].type_value(initial_value[i])
+
+            user_edit_page.click_save_profile()

@@ -14,7 +14,6 @@ from pages.home import Home
 
 class TestProfilePage:
 
-    @pytest.mark.xfail(reason="Bug 927806 - [dev] Default avatar is not visible on profile page")
     def test_edit_profile_fields(self, mozwebqa):
         home_page = Home(mozwebqa)
         home_page.login()

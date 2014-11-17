@@ -49,21 +49,21 @@ class TestEventsPage:
 
     @pytest.mark.nondestructive
     def test_filter_results_by_owner(self, mozwebqa):
-        query = u'John Giannelos'
+        query = u'teste teste'
         home_page = Home(mozwebqa)
 
         events_page = home_page.header.click_events_link()
         events_page.filter_for(query)
-        Assert.equal(u'John Giannelos', events_page.event_profile_owner_text)
+        Assert.equal(query, events_page.event_profile_owner_text)
 
     @pytest.mark.nondestructive
     def test_filter_results_by_location(self, mozwebqa):
-        query = u'Greece'
+        query = u'United Kingdom'
         home_page = Home(mozwebqa)
 
         events_page = home_page.header.click_events_link()
         events_page.filter_for(query)
-        Assert.contains(u'Greece', events_page.event_profile_location_text)
+        Assert.contains(query, events_page.event_profile_location_text)
 
     @pytest.mark.skip_selenium
     @pytest.mark.nondestructive
